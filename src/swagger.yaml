@@ -1,0 +1,103 @@
+swagger: '2.0'
+info:
+  description: 'IT NETWORK API docs'
+  version: '1.0.0'
+  title: 'IT NETWORK'
+  license:
+    name: 'MIT'
+    url: 'https://opensource.org/licenses/MIT'
+host: 'localhost:5000'
+basePath: '/api/v1'
+tags:
+- name: 'Auth'
+  description: 'Authentication APIs'
+- name: 'User'
+  description: 'User APIs'
+schemes:
+- 'http'
+paths:
+  /auth/register:
+    post:
+      tags:
+      - 'Auth'
+      summary: 'Resgister API'
+      operationId: "register"
+      consumes:
+      - 'application/json'
+      produces:
+      - 'application/json'
+      parameters:
+      - in: 'body'
+        name: 'body'
+        description: 'Register for user'
+        required: true
+        schema: 
+          $ref: '#/definitions/RegisterDto'
+      responses:
+        '400':
+          description: 'Invalid input'
+  /auth/login:
+    post:
+      tags:
+      - 'Auth'
+      summary: 'Login API and get token'
+      description: 'Input email and password'
+      operationId: "login"
+      consumes:
+      - 'application/json'
+      produces:
+      - 'application/json'
+      parameters:
+      - in: 'body'
+        name: 'body'
+        description: 'Login for user'
+        required: true
+        schema: 
+          $ref: '#/definitions/LoginDto'
+      responses:
+        '400':
+          description: 'Invalid input'
+  /auth:
+    get:
+      tags:
+      - 'Auth'
+      summary: 'Get current login'
+      operationId: "get current login"
+      consumes:
+      - 'application/json'
+      produces:
+      - 'application/json'
+      responses:
+        '400':
+          description: 'Login now'
+
+  /users:
+    get:
+      tags:
+      - 'User'
+      summary: 'Get User'
+      operationId: "get-user"
+      consumes:
+      - 'application/json'
+      produces:
+      - 'application/json'
+      responses:
+        '400':
+          description: 'Login now'
+definitions:
+  LoginDto:
+    type: 'object'
+    properties:
+      account:
+        type: 'string'
+      password:
+        type: 'string'
+  RegisterDto:
+    type: 'object'
+    properties:
+      fullname:
+        type: 'string'
+      account:
+        type: 'string'
+      password:
+        type: 'string'
