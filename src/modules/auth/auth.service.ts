@@ -140,6 +140,31 @@ class AuthService {
     return user;
   }
 
+  public async updatePassword(
+    password_old: string,
+    password: string,
+    userId: string
+  ): Promise<any> {
+    if (!password) throw new HttpException(400, "Password is not valid!");
+
+    if (password.length < 6)
+      throw new HttpException(400, "Password must be more than 6 characters!");
+
+    const user: any = await this.userSchema.findById(userId).exec();
+
+    // (user.password là mật khẩu id hiện tại xét nhập trùng khớp không)
+    const isMatch = await bcryptjs.compare(password_old, user.password);
+    if (!isMatch) throw new HttpException(400, "Password is not match");
+
+    const salt = await bcryptjs.genSalt(10);
+    const passwordHash = await bcryptjs.hash(password, salt);
+    user.password = passwordHash;
+
+    await user.save();
+
+    return user;
+  }
+
   public async refreshToken(token: string): Promise<TokenData> {
     const refreshToken = await this.getRefreshTokenFromDb(token);
     const { user } = refreshToken;

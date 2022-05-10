@@ -20,11 +20,7 @@ export default class UsersController {
     }
   };
 
-  public activeAccount = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
+  public activeAccount = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { active_token } = req.body;
       await this.authService.activeAccount(active_token);
@@ -70,7 +66,7 @@ export default class UsersController {
 
   public forgotPassword = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { account } = req.body
+      const { account } = req.body;
       const user = await this.authService.forgotPassword(account);
       res.status(200).json(user);
     } catch (error) {
@@ -81,10 +77,21 @@ export default class UsersController {
   public resetPassword = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const model: LoginDto = req.body;
-      const userId = req.user.id
-     
+      const userId = req.user.id;
+
       await this.authService.resetPassword(model, userId);
-      res.status(200).json({message: "Password successfully changed!"});
+      res.status(200).json({ message: "Password successfully changed!" });
+    } catch (error) {
+      next(error);
+    }
+  };
+  public updatePassword = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { password_old, password } = req.body;
+      const userId = req.user.id;
+
+      await this.authService.updatePassword(password_old, password, userId);
+      res.status(200).json({ message: "Password successfully changed!" });
     } catch (error) {
       next(error);
     }
@@ -97,7 +104,7 @@ export default class UsersController {
 
       res.cookie("jwt", tokenData.access_token, {
         httpOnly: true,
-        maxAge:  24 * 60 * 60 * 1000, // 1h
+        maxAge: 24 * 60 * 60 * 1000, // 1h
       });
 
       res.status(200).json(tokenData);
@@ -105,7 +112,7 @@ export default class UsersController {
       next(error);
     }
   };
-  
+
   public revokeToken = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const token = req.body.token;

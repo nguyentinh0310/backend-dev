@@ -23,6 +23,7 @@ export default class AuthRoute implements Route {
     this.router.post(this.path + '/revoke-token', this.authController.revokeToken);
     this.router.post(this.path + '/forgot-password', this.authController.forgotPassword);
     this.router.post(this.path + '/reset-password',  authMiddleware, this.authController.resetPassword);
+    this.router.post(this.path + '/update-password',  authMiddleware, this.authController.updatePassword);
     this.router.get(this.path, authMiddleware, this.authController.getCurrentLogginUser);
   }
 }
