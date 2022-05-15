@@ -11,6 +11,13 @@
     "no-console": "error",
     "@typescript-eslint/no-var-requires": "off"
   },
+  // "prefer-const": [
+  //   "off",
+  //   {
+  //     "destructuring": "any",
+  //     "ignoreReadBeforeAssign": false
+  //   }
+  // ],
   "env": {
     "browser": true,
     "amd": true,

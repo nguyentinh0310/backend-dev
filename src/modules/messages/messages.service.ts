@@ -10,25 +10,17 @@ class MessageService {
   private conversationSchema = ConversationSchema;
   private messageSchema = MessageSchema;
 
-  public async addMessage(
-    messageDto: MessageDto,
-    userId: string
-  ): Promise<IMessage> {
+  public async addMessage(messageDto: MessageDto, userId: string): Promise<IMessage> {
     if (isEmptyObject(messageDto)) {
       throw new HttpException(400, "Model is empty");
     }
-    const { sender, recipient, text, media, call } = messageDto;
-    if (userId) {
-      messageDto.sender = userId;
-    }
+    let { sender, recipient, text, media, call } = messageDto;
+    sender = userId;
 
     const newConversation = await this.conversationSchema
       .findOneAndUpdate(
         {
-          $or: [
-            { recipients: [sender, recipient] },
-            { recipients: [recipient, sender] },
-          ],
+          $or: [{ recipients: [sender, recipient] }, { recipients: [recipient, sender] }],
         },
         {
           recipients: [sender, recipient],
@@ -67,12 +59,10 @@ class MessageService {
         ],
       }),
       query
-    )
-      .paginating()
-      .sorting();
+    ).paginating();
 
     const messages = await features.query;
-    const rowCount = await this.messageSchema.countDocuments().exec();
+    const rowCount = messages.length;
 
     return {
       data: messages,
@@ -83,7 +73,6 @@ class MessageService {
   public async deleteMessage(userId: string, messageId: string) {
     const message = await this.messageSchema.findById(messageId).exec();
     if (!message) throw new HttpException(400, "Message not found");
-
     if (message.sender.toString() !== userId)
       throw new HttpException(400, "User is not authorized");
 

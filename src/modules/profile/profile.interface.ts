@@ -17,7 +17,6 @@ export interface IExperience {
   from: Date;
   to: Date;
   current: boolean;
-  description: string;
 }
 export interface IEducation {
   _id: string;
@@ -26,11 +25,9 @@ export interface IEducation {
   from: Date;
   to: Date;
   current: boolean;
-  description: string;
 }
 
 export interface ISocial extends Record<string, string> {
-  youtube: string;
   twitter: string;
   linkedin: string;
   facebook: string;

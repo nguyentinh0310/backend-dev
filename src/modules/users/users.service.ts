@@ -127,7 +127,8 @@ class UserService {
   public async searchUser(keyword: any): Promise<IUser> {
     keyword = new RegExp(keyword, "i");
     const users: any = await this.userSchema
-      .find({ $or: [{ fullname: keyword }, { account: keyword }] })
+      // .find({ $or: [{ fullname: keyword }, { account: keyword }] })
+      .find({ $or: [{ fullname: keyword }] })
       .limit(10)
       .select("fullname account avatar")
       .exec();

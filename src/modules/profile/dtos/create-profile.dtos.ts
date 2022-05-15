@@ -3,7 +3,6 @@ export default class CreateProfileDto {
     location: string,
     bio: string,
     skills: string,
-    youtube: string,
     twitter: string,
     instagram: string,
     linkedin: string,
@@ -13,7 +12,6 @@ export default class CreateProfileDto {
     this.location = location;
     this.bio = bio;
     this.skills = skills;
-    this.youtube = youtube;
     this.twitter = twitter;
     this.instagram = instagram;
     this.linkedin = linkedin;
@@ -24,7 +22,6 @@ export default class CreateProfileDto {
   public location: string;
   public bio: string;
   public skills: string;
-  public youtube: string;
   public twitter: string;
   public instagram: string;
   public linkedin: string;

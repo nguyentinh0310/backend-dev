@@ -27,7 +27,7 @@ class PostService {
     const features = new APIfeatures(
       this.postSchema
         .find()
-        .populate("user likes", ["fullname", "avatar"])
+        .populate("user likes", ["fullname", "avatar", "followings", "followers"])
         .populate({
           path: "comments",
           populate: {
@@ -60,7 +60,7 @@ class PostService {
         .find({
           user: [...userFollow, userId],
         })
-        .populate("user likes", ["fullname", "avatar", "followings"])
+        .populate("user likes", ["fullname", "avatar", "followings", "followers"])
         .populate({
           path: "comments",
           populate: {
@@ -89,7 +89,7 @@ class PostService {
   public async getPostById(postId: string): Promise<IPost> {
     const post = await this.postSchema
       .findById(postId)
-      .populate("user likes", ["fullname", "avatar"])
+      .populate("user likes", ["fullname", "avatar", "followings", "followers"])
       .populate({
         path: "comments",
         populate: {
@@ -106,7 +106,7 @@ class PostService {
     const features = new APIfeatures(
       this.postSchema
         .find({ user: userId })
-        .populate("user likes", ["fullname", "avatar"])
+        .populate("user likes", ["fullname", "avatar", "followings", "followers"])
         .populate({
           path: "comments",
           populate: {
@@ -156,12 +156,13 @@ class PostService {
     return post;
   }
 
-  public async likePost(userId: string, postId: string) {
+  public async likePost(userId: string, postId: string): Promise<IPost> {
     const post = await this.postSchema
       .find({
         _id: postId,
         likes: userId,
       })
+      .populate("user likes", ["fullname", "avatar", "followings", "followers"])
       .exec();
 
     if (post.length > 0) throw new HttpException(400, "You liked this post.");
@@ -174,11 +175,14 @@ class PostService {
         },
         { new: true }
       )
+      .populate("user likes", ["fullname", "avatar", "followings", "followers"])
       .exec();
     if (!like) throw new HttpException(400, "This post does not exist.");
+
+    return like;
   }
 
-  public async unLikePost(userId: string, postId: string) {
+  public async unLikePost(userId: string, postId: string): Promise<IPost> {
     const unlike = await this.postSchema
       .findOneAndUpdate(
         { _id: postId },
@@ -187,8 +191,11 @@ class PostService {
         },
         { new: true }
       )
+      .populate("user likes", ["fullname", "avatar", "followings", "followers"])
       .exec();
     if (!unlike) throw new HttpException(400, "This post does not exist.");
+
+    return unlike;
   }
 
   public async savePost(userId: string, postId: string): Promise<IUser> {

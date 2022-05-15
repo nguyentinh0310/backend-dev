@@ -8,14 +8,16 @@ class ConversationService {
   private conversationSchema = ConversationSchema;
   private messageSchema = MessageSchema;
 
-  public async getConversations(query: any): Promise<ListResponse<IConversation>> {
+  public async getConversations(userId: string, query: any): Promise<ListResponse<IConversation>> {
     const features = new APIfeatures(
-      this.conversationSchema.find({}).populate("recipients", "avatar account fullname"),
+      this.conversationSchema
+        .find({ recipients: userId })
+        .populate("recipients", "avatar account fullname"),
       query
     );
 
     const conversations = await features.query;
-    const rowCount = await this.conversationSchema.countDocuments().exec();
+    const rowCount = conversations.length;
 
     return {
       data: conversations,
@@ -24,13 +26,15 @@ class ConversationService {
   }
 
   public async deleteConversation(fromUserId: string, toUserId: string) {
-    const newConv = await this.conversationSchema.findOneAndDelete({
-      $or: [
-        { sender: fromUserId, recipient: toUserId },
-        { sender: toUserId, recipient: fromUserId },
-      ],
-    }).exec()
-    await this.messageSchema.deleteMany({collection: newConv?._id})
+    const newConv = await this.conversationSchema
+      .findOneAndDelete({
+        $or: [
+          { sender: fromUserId, recipient: toUserId },
+          { sender: toUserId, recipient: fromUserId },
+        ],
+      })
+      .exec();
+    await this.messageSchema.deleteMany({ conversation: newConv?._id });
   }
 }
 

@@ -9,6 +9,7 @@ import hpp from "hpp";
 import http from "http";
 import mongoose, { ConnectOptions } from "mongoose";
 import morgan from "morgan";
+import socketServer from "./socket-server";
 import socketIo from "socket.io";
 import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
@@ -42,6 +43,12 @@ class App {
       },
     });
     this.app.set("socketio", this.io);
+
+    this.io.on("connection", (socket: socketIo.Socket) => {
+      Logger.warn("a user connected : " + socket.id);
+      socket.emit("message", "Hello " + socket.id);
+      socketServer(socket)
+    });
   }
 
   public listen() {

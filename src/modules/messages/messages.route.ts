@@ -14,8 +14,8 @@ class MessageRoute implements Route {
     }
   
     private initializeRoutes() {
-        this.router.post(`${this.path}`, validationMiddleware(MessageDto, true), authMiddleware, this.messageController.addMessage)
         this.router.get(`${this.path}/:id`, authMiddleware, this.messageController.getMessages)
+        this.router.post(`${this.path}`, validationMiddleware(MessageDto, true), authMiddleware, this.messageController.addMessage)
         this.router.delete(`${this.path}/:id`, authMiddleware, this.messageController.deleteMessage)
       }
   }

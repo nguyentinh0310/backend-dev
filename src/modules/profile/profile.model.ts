@@ -40,9 +40,6 @@ const ProfileSchema = new mongoose.Schema(
           type: Boolean,
           default: false,
         },
-        description: {
-          type: String,
-        },
       },
     ],
     educations: [
@@ -53,7 +50,6 @@ const ProfileSchema = new mongoose.Schema(
         },
         fieldofstudy: {
           type: String,
-          required: true,
         },
         from: {
           type: Date,
@@ -66,15 +62,9 @@ const ProfileSchema = new mongoose.Schema(
           type: Boolean,
           default: false,
         },
-        description: {
-          type: String,
-        },
       },
     ],
     socail: {
-      youtube: {
-        type: String,
-      },
       twitter: {
         type: String,
       },

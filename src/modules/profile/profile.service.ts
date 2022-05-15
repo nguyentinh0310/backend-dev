@@ -26,7 +26,7 @@ class ProfileService {
   }
 
   public async createProfile(userId: string, profileDto: CreateProfileDto): Promise<IProfile> {
-    const { location, bio, skills, youtube, twitter, instagram, linkedin, facebook, github } =
+    const { location, bio, skills, twitter, instagram, linkedin, facebook, github } =
       profileDto;
 
     const profileFields: Partial<IProfile> = {
@@ -39,7 +39,6 @@ class ProfileService {
     };
 
     const socialFields: ISocial = {
-      youtube,
       twitter,
       instagram,
       linkedin,

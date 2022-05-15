@@ -4,5 +4,4 @@ export default class AddExperienceDto {
   public from: Date | undefined;
   public to: Date | undefined;
   public current: boolean | undefined;
-  public description: string | undefined;
 }

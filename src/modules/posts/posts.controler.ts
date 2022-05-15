@@ -79,8 +79,8 @@ class PostController {
     try {
       const userId = req.user.id;
       const postId = req.params.id;
-      await this.postService.likePost(userId, postId);
-      res.status(200).json({ message: "Like post" });
+      const postLike = await this.postService.likePost(userId, postId);
+      res.status(200).json(postLike);
     } catch (error) {
       next(error);
     }
@@ -90,8 +90,8 @@ class PostController {
     try {
       const userId = req.user.id;
       const postId = req.params.id;
-      await this.postService.unLikePost(userId, postId);
-      res.status(200).json({ message: "unLiked post" });
+      const postUnLike = await this.postService.unLikePost(userId, postId);
+      res.status(200).json(postUnLike);
     } catch (error) {
       next(error);
     }
