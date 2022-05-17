@@ -90,6 +90,7 @@ class PostService {
     const post = await this.postSchema
       .findById(postId)
       .populate("user likes", ["fullname", "avatar", "followings", "followers"])
+
       .populate({
         path: "comments",
         populate: {

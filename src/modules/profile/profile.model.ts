@@ -26,9 +26,6 @@ const ProfileSchema = new mongoose.Schema(
         company: {
           type: String,
         },
-        location: {
-          type: String,
-        },
         from: {
           type: Date,
           required: true,
@@ -47,9 +44,6 @@ const ProfileSchema = new mongoose.Schema(
         school: {
           type: String,
           required: true,
-        },
-        fieldofstudy: {
-          type: String,
         },
         from: {
           type: Date,

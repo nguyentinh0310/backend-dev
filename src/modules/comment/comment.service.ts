@@ -50,14 +50,16 @@ class CommentService {
     commentDto: CommentDto
   ): Promise<IComment> {
     const { content } = commentDto;
-    const comment = await this.commentSchema.findOneAndUpdate(
-      {
-        _id: commentId,
-        user: userId,
-      },
-      { content },
-      { new: true }
-    );
+    const comment = await this.commentSchema
+      .findOneAndUpdate(
+        {
+          _id: commentId,
+          user: userId,
+        },
+        { content },
+        { new: true }
+      )
+      .exec();
 
     if (!comment) throw new HttpException(400, "Comment not found");
 

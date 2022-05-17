@@ -306,24 +306,33 @@ class UserService {
   }
 
   public async suggestionUser(userId: string, query: any): Promise<ListResponse<IUser>> {
-    const user = await this.userSchema
-      .findOne({ _id: userId })
-      .populate("followings followers", "_id")
-      .exec();
+    // const user = await this.userSchema
+    //   .findOne({ _id: userId })
+    //   .populate("followings followers", "_id")
+    //   .select("fullname account avatar")
+    //   .exec();
 
-    const userFollow: any = user?.followings;
+    // const userFollow: any = user?.followings
 
-    const newArr = [...userFollow, userId];
+    // const newArr = [...userFollow, userId];
+    // console.log(userFollow);
     const num = query || 10;
 
     const users = await this.userSchema.aggregate([
-      { $match: { _id: { $nin: newArr } } },
+      { $match: { _id: { $nin: [userId] } } },
       { $sample: { size: Number(num) } },
       {
         $lookup: { from: "users", localField: "followers", foreignField: "_id", as: "followers" },
       },
       {
-        $lookup: { from: "users", localField: "following", foreignField: "_id", as: "following" },
+        $lookup: { from: "users", localField: "followings", foreignField: "_id", as: "followings" },
+      },
+      {
+        $project: {
+          fullname: 1,
+          account: 1,
+          avatar: 1,
+        },
       },
     ]);
     const rowCount = users.length;

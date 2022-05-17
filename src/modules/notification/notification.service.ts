@@ -6,10 +6,7 @@ import NotificationSchema from "./notification.model";
 
 class NotificationService {
   private notificationSchema = NotificationSchema;
-  public async createNotify(
-    model: NotificationDto,
-    userId: string
-  ): Promise<INotification> {
+  public async createNotify(model: NotificationDto, userId: string): Promise<INotification> {
     if (isEmptyObject(model)) {
       throw new HttpException(400, "Model is empty");
     }
@@ -37,10 +34,7 @@ class NotificationService {
     return notifies;
   }
 
-  public async deleteNotify(
-    notiId: string,
-    query_url: any
-  ): Promise<INotification> {
+  public async deleteNotify(notiId: string, query_url: any): Promise<INotification> {
     const notify = await this.notificationSchema.findOneAndDelete({
       id: notiId,
       url: query_url,
@@ -59,9 +53,18 @@ class NotificationService {
     );
     return notify;
   }
-
+  // public async isReadNotifyAll(): Promise<INotification> {
+  //   const notify: any = await this.notificationSchema.f(
+  //     { _id: notiId },
+  //     {
+  //       isRead: true,
+  //     },
+  //     { new: true }
+  //   );
+  //   return notify;
+  // }
   public async deleteAllNotifies(userId: string) {
-     await this.notificationSchema.deleteMany({recipients: userId})
+    await this.notificationSchema.deleteMany({ recipients: userId });
   }
 }
 

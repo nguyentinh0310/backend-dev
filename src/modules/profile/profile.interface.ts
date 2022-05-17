@@ -13,7 +13,6 @@ export interface IExperience {
   _id: string;
   title: string;
   company: string;
-  location: string;
   from: Date;
   to: Date;
   current: boolean;
@@ -21,7 +20,6 @@ export interface IExperience {
 export interface IEducation {
   _id: string;
   school: string;
-  fieldofstudy: string;
   from: Date;
   to: Date;
   current: boolean;

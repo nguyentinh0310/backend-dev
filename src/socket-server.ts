@@ -1,5 +1,4 @@
 import { Logger } from "@core/utils";
-import { IConversation } from "@modules/conversations";
 import { INotification } from "@modules/notification";
 import { IPost } from "@modules/posts";
 import { IUser } from "@modules/users";
@@ -19,11 +18,23 @@ const SocketServer = (socket: socketIo.Socket) => {
     users = users.filter((user: any) => user.socketId !== socket.id);
   });
 
+  // Post
+  socket.on("create-post", (post: IPost) => {
+    socket.broadcast.emit("create-post-to-client", post);
+  });
+
+  socket.on("update-post", (post: IPost) => {
+    socket.broadcast.emit("update-post-to-client", post);
+  });
+
+  socket.on("delete-post", (post: IPost) => {
+    socket.broadcast.emit("delete-post-to-client", post);
+  });
+
   // Likes
   socket.on("like-post", (post: IPost) => {
-    const ids = [...post.user.followers, post.user._id];
+    const ids = [...post.user.followers, ...post.user.followings, post.user._id];
     const clients = users.filter((user: any) => ids.includes(user.id));
-
     if (clients.length > 0) {
       clients.forEach((client: any) => {
         socket.to(`${client.socketId}`).emit("like-to-client", post);
@@ -33,9 +44,8 @@ const SocketServer = (socket: socketIo.Socket) => {
 
   // Unlike
   socket.on("unlike-post", (post) => {
-    const ids = [...post.user.followers, post.user._id];
+    const ids = [...post.user.followers, ...post.user.followings, post.user._id];
     const clients = users.filter((user: any) => ids.includes(user.id));
-
     if (clients.length > 0) {
       clients.forEach((client: any) => {
         socket.to(`${client.socketId}`).emit("unlike-to-client", post);
@@ -44,27 +54,43 @@ const SocketServer = (socket: socketIo.Socket) => {
   });
 
   // Comment
-  socket.on("create-comment", (post: IPost) => {
-    // const ids = [...post.user.followers, post.user._id];
-    const clients = users.filter((user: any) => post.user._id.includes(user.id));
+  socket.on("create-comment", (post) => {
+    // const ids = [...post.user.followers, ...post.user.followings, post.user._id];
+    // const clients = users.filter((user: any) => ids.includes(user.id));
 
-    if (clients.length > 0) {
-      clients.forEach((client: any) => {
-        socket.to(`${client.socketId}`).emit("create-comment-to-client", post);
-      });
-    }
+    // if (clients.length > 0) {
+    //   clients.forEach((client: any) => {
+    //     socket.to(`${client.socketId}`).emit("create-comment-to-client", post);
+    //   });
+    // }
+    socket.broadcast.emit("create-comment-to-client", post);
+  });
+
+  socket.on("update-comment", (post) => {
+    // const ids = [...post.user.followers, ...post.user.followings, post.user._id];
+    // const clients = users.filter((user: any) => ids.includes(user.id));
+    // if (clients.length > 0) {
+    //   clients.forEach((client: any) => {
+    //     socket.to(`${client.socketId}`).emit("update-comment-to-client", post);
+    //   });
+    // }
+    socket.broadcast.emit("update-comment-to-client", post);
   });
 
   socket.on("delete-comment", (post: IPost) => {
-    // const ids = [...post.user.followers, post.user._id];
-    const clients = users.filter((user: any) => post.user._id.includes(user.id));
-
-    if (clients.length > 0) {
-      clients.forEach((client: any) => {
-        socket.to(`${client.socketId}`).emit("delete-comment-to-client", post);
-      });
-    }
+    socket.broadcast.emit("delete-comment-to-client", post);
   });
+
+  
+  socket.on("like-comment", (post: IPost) => {
+    socket.broadcast.emit("like-comment-to-client", post);
+  });
+    
+  socket.on("unLike-comment", (post: IPost) => {
+    socket.broadcast.emit("unLike-comment-to-client", post);
+  });
+
+
 
   // Follow
   socket.on("follow", (newUser: IUser) => {
@@ -83,14 +109,16 @@ const SocketServer = (socket: socketIo.Socket) => {
   });
 
   // Notification
-  socket.on("create-notify", (msg: INotification) => {
-    const client = users.find((user: any) => msg.recipients.includes(user.id));
-    client && socket.to(`${client.socketId}`).emit("create-notify-to-client", msg);
+  socket.on("create-notify", (notify: INotification) => {
+    // console.log(notify);
+    const client = users.find((user: any) => notify.recipients.includes(user.id));
+    // console.log(client);
+    client && socket.to(`${client.socketId}`).emit("create-notify-to-client", notify);
   });
 
-  socket.on("remove-notify", (msg: INotification) => {
-    const client = users.find((user: any) => msg.recipients.includes(user.id));
-    client && socket.to(`${client.socketId}`).emit("remove-notify-to-client", msg);
+  socket.on("remove-notify", (notify: INotification) => {
+    const client = users.find((user: any) => notify.recipients.includes(user.id));
+    client && socket.to(`${client.socketId}`).emit("remove-notify-to-client", notify);
   });
 
   // Conversation

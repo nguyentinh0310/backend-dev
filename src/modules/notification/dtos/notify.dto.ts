@@ -1,5 +1,3 @@
-import { IsNotEmpty } from "class-validator";
-
 export default class NotificationDto {
   constructor(
     id: string,

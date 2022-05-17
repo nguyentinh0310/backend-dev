@@ -1,5 +1,5 @@
 import { Route } from "@core/interfaces";
-import { authMiddleware, validationMiddleware } from "@core/middlewares";
+import { authAdmin, authMiddleware, validationMiddleware } from "@core/middlewares";
 import { Router } from "express";
 import AddEducationDto from "./dtos/add_education.dto";
 import AddExperienceDto from "./dtos/add_experience.dto";
@@ -16,7 +16,7 @@ class ProfileRoute implements Route {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}`, this.profileController.getAllProfiles)
+    this.router.get(`${this.path}`, authMiddleware, authAdmin, this.profileController.getAllProfiles)
     this.router.get(`${this.path}/me`, authMiddleware, this.profileController.getCurrentProfile)
     this.router.post(`${this.path}`, validationMiddleware(CreateProfileDto), authMiddleware, this.profileController.ceateProfile)
     this.router.get(`${this.path}/:id`, authMiddleware, this.profileController.getProfileByUserId)
