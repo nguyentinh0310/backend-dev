@@ -11,6 +11,7 @@ class PostService {
   private postSchema = PostSchema;
   private userSchema = UserSchema;
   private commentSchema = CommentSchema;
+  
 
   public async createPost(userId: string, postDto: CreatePostDto): Promise<IPost> {
     const { content, images } = postDto;

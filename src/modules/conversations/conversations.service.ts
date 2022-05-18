@@ -1,3 +1,4 @@
+import { HttpException } from "@core/exceptions";
 import { ListResponse } from "@core/interfaces";
 import { APIfeatures } from "@core/utils";
 import { MessageSchema } from "@modules/messages";
@@ -34,6 +35,8 @@ class ConversationService {
         ],
       })
       .exec();
+
+    if (!newConv) throw new HttpException(400, "Conversation is not found");
     await this.messageSchema.deleteMany({ conversation: newConv?._id });
   }
 }

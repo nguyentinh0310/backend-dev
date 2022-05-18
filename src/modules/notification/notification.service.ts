@@ -35,7 +35,7 @@ class NotificationService {
   }
 
   public async deleteNotify(notiId: string, query_url: any): Promise<INotification> {
-    const notify = await this.notificationSchema.findOneAndDelete({
+    const notify: any = await this.notificationSchema.deleteMany({
       id: notiId,
       url: query_url,
     });
