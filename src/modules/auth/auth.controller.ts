@@ -37,7 +37,7 @@ export default class UsersController {
 
       res.cookie("jwt", tokenData.access_token, {
         httpOnly: true,
-        // maxAge:  24 * 60 * 60 * 1000, // 1h
+        maxAge: 2 * 24 * 60 * 60 * 1000, // 1h
       });
 
       res.status(200).json(tokenData);
@@ -104,7 +104,7 @@ export default class UsersController {
 
       res.cookie("jwt", tokenData.access_token, {
         httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000, // 1h
+        maxAge: 2 * 24 * 60 * 60 * 1000, // 1h
       });
 
       res.status(200).json(tokenData);

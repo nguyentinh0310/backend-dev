@@ -1,6 +1,6 @@
 import { HttpException } from "@core/exceptions";
 import { ListResponse } from "@core/interfaces";
-import { IUser, UserSchema } from "@modules/users";
+import { UserSchema } from "@modules/users";
 import normalize from "normalize-url";
 import AddEducationDto from "./dtos/add_education.dto";
 import AddExperienceDto from "./dtos/add_experience.dto";

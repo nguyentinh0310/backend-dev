@@ -66,16 +66,13 @@ const SocketServer = (socket: socketIo.Socket) => {
     socket.broadcast.emit("delete-comment-to-client", post);
   });
 
-  
   socket.on("like-comment", (post: IPost) => {
     socket.broadcast.emit("like-comment-to-client", post);
   });
-    
+
   socket.on("unLike-comment", (post: IPost) => {
     socket.broadcast.emit("unLike-comment-to-client", post);
   });
-
-
 
   // Follow
   socket.on("follow", (newUser: IUser) => {
@@ -105,14 +102,20 @@ const SocketServer = (socket: socketIo.Socket) => {
   });
 
   // Messages
-  socket.on("send-message", ({ sender, recipient, text }) => {
+  socket.on("send-message", ({ sender, recipient, text, media }) => {
     const user = users.find((user: any) => user.id === recipient);
     if (user) {
       socket.to(user.socketId).emit("get-message", {
         sender,
         text,
+        media
       });
     }
+  });
+
+  socket.on("delete-message", (message) => {
+    const user = users.find((user: any) => user.id === message.recipient);
+    user && socket.to(`${user.socketId}`).emit("delete-message-to-client", message);
   });
 };
 

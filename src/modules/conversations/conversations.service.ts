@@ -17,13 +17,50 @@ class ConversationService {
       query
     );
 
+    const convRead = await this.conversationSchema
+      .find({ recipients: userId, isRead: false })
+      .exec();
+
     const conversations = await features.query;
-    const rowCount = conversations.length;
+    const rowCount = convRead.length;
 
     return {
       data: conversations,
       totalRows: rowCount,
     };
+  }
+
+  public async getConvId(userId: string): Promise<IConversation> {
+    const conversation = await this.conversationSchema
+      .findOne({ recipients: userId })
+      .populate("recipients", "avatar account fullname")
+      .exec();
+
+    if (!conversation) throw new HttpException(400, "Conversation is not found");
+
+    return conversation;
+  }
+
+  public async isReadConv(userId: string) {
+    const conversation: any = await this.conversationSchema.findOneAndUpdate(
+      { recipients: userId },
+      {
+        isRead: true,
+      },
+      { new: true }
+    );
+    return conversation;
+  }
+
+  public async isUnReadConv(userId: string) {
+    const conversation: any = await this.conversationSchema.findOneAndUpdate(
+      { recipients: userId },
+      {
+        isRead: false,
+      },
+      { new: true }
+    );
+    return conversation;
   }
 
   public async deleteConversation(fromUserId: string, toUserId: string) {

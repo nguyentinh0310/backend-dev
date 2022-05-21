@@ -11,7 +11,6 @@ class PostService {
   private postSchema = PostSchema;
   private userSchema = UserSchema;
   private commentSchema = CommentSchema;
-  
 
   public async createPost(userId: string, postDto: CreatePostDto): Promise<IPost> {
     const { content, images } = postDto;
@@ -74,12 +73,7 @@ class PostService {
       .paginating()
       .sorting();
     const posts = await features.query;
-    const rowCount = await this.postSchema
-      .find({
-        user: [...userFollow, userId],
-      })
-      .countDocuments()
-      .exec();
+    const rowCount = posts.length;
 
     return {
       data: posts,

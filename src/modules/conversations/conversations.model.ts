@@ -7,13 +7,11 @@ const ConversationSchema = new mongoose.Schema(
     text: String,
     media: Array,
     call: Object,
+    isRead: { type: Boolean, default: false },
   },
   {
     timestamps: true,
   }
 );
 
-export default mongoose.model<IConversation & Document>(
-  "conversation",
-  ConversationSchema
-);
+export default mongoose.model<IConversation & Document>("conversation", ConversationSchema);

@@ -1,4 +1,5 @@
 import { HttpException } from "@core/exceptions";
+import { ListResponse } from "@core/interfaces";
 import { isEmptyObject } from "@core/utils";
 import NotificationDto from "./dtos/notify.dto";
 import { INotification } from "./notification.interface";
@@ -26,12 +27,19 @@ class NotificationService {
     return notify;
   }
 
-  public async getNotifies(userId: string): Promise<INotification[]> {
+  public async getNotifies(userId: string): Promise<ListResponse<INotification>> {
     const notifies = await this.notificationSchema
       .find({ recipients: userId })
       .sort("-createdAt")
       .populate("user", "avatar fullname");
-    return notifies;
+
+    const notifiesRead = await this.notificationSchema.find({ recipients: userId, isRead: false });
+    const rowCount = notifiesRead.length;
+
+    return {
+      data: notifies,
+      totalRows: rowCount,
+    };
   }
 
   public async deleteNotify(notiId: string, query_url: any): Promise<INotification> {
@@ -53,16 +61,7 @@ class NotificationService {
     );
     return notify;
   }
-  // public async isReadNotifyAll(): Promise<INotification> {
-  //   const notify: any = await this.notificationSchema.f(
-  //     { _id: notiId },
-  //     {
-  //       isRead: true,
-  //     },
-  //     { new: true }
-  //   );
-  //   return notify;
-  // }
+
   public async deleteAllNotifies(userId: string) {
     await this.notificationSchema.deleteMany({ recipients: userId });
   }
