@@ -13,14 +13,6 @@ class ConversationControler {
     }
   };
 
-  public getConversationById = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const conversation = await this.conversationService.getConvId(req.params.id);
-      res.status(200).json(conversation);
-    } catch (error) {
-      next(error);
-    }
-  };
 
   public isReadConv = async (req: Request, res: Response, next: NextFunction) => {
     try {

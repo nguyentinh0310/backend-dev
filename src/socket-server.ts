@@ -9,9 +9,12 @@ let users: any = [];
 const SocketServer = (socket: socketIo.Socket) => {
   //connect
   socket.on("join-user", (user: IUser) => {
-    users.push({ id: user._id, socketId: socket.id, followers: user.followers });
-    Logger.info({ users });
+    if (user) {
+      users.push({ id: user._id, socketId: socket.id, followers: user.followers });
+      Logger.info({ users });
+    }
   });
+
   // disconnect
   socket.on("disconnect", () => {
     const data = users.find((user: any) => user.socketId === socket.id);
@@ -132,19 +135,21 @@ const SocketServer = (socket: socketIo.Socket) => {
 
   // Check User Online / Offline
   socket.on("check-user-online", (data) => {
-    const following = users.filter((user: any) =>
-      data.followings.find((item: IUser) => item._id === user.id)
-    );
-    socket.emit("check-user-online-to-me", following);
+    if (data) {
+      const following = users.filter((user: any) =>
+        data.followings.find((item: IUser) => item._id === user.id)
+      );
+      socket.emit("check-user-online-to-me", following);
 
-    const clients = users.filter((user: any) =>
-      data.followers.find((item: IUser) => item._id === user.id)
-    );
+      const clients = users.filter((user: any) =>
+        data.followers.find((item: IUser) => item._id === user.id)
+      );
 
-    if (clients.length > 0) {
-      clients.forEach((client: any) => {
-        socket.to(`${client.socketId}`).emit("check-user-online-to-client", data._id);
-      });
+      if (clients.length > 0) {
+        clients.forEach((client: any) => {
+          socket.to(`${client.socketId}`).emit("check-user-online-to-client", data._id);
+        });
+      }
     }
   });
 };

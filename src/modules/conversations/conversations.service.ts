@@ -31,17 +31,6 @@ class ConversationService {
     };
   }
 
-  public async getConvId(userId: string): Promise<IConversation> {
-    const conversation = await this.conversationSchema
-      .findOne({ recipients: userId })
-      .populate("recipients", "avatar account fullname")
-      .exec();
-
-    if (!conversation) throw new HttpException(400, "Conversation is not found");
-
-    return conversation;
-  }
-
   public async isReadConv(userId: string) {
     const conversation: any = await this.conversationSchema.findOneAndUpdate(
       { recipients: userId },
@@ -64,18 +53,19 @@ class ConversationService {
     return conversation;
   }
 
-  public async deleteConversation(fromUserId: string, toUserId: string) {
+  public async deleteConversation(fromUserId: string, toUserId: string){
     const newConv = await this.conversationSchema
       .findOneAndDelete({
         $or: [
-          { sender: fromUserId, recipient: toUserId },
-          { sender: toUserId, recipient: fromUserId },
+          { recipients: [fromUserId, toUserId] },
+          { recipients: [toUserId, fromUserId] },
         ],
       })
       .exec();
 
     if (!newConv) throw new HttpException(400, "Conversation is not found");
     await this.messageSchema.deleteMany({ conversation: newConv?._id });
+
   }
 }
 
