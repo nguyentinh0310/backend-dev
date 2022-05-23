@@ -8,13 +8,25 @@ let users: any = [];
 
 const SocketServer = (socket: socketIo.Socket) => {
   //connect
-  socket.on("join-user", (id) => {
-    users.push({ id, socketId: socket.id });
-    socket.emit("get-user", users);
+  socket.on("join-user", (user: IUser) => {
+    users.push({ id: user._id, socketId: socket.id, followers: user.followers });
     Logger.info({ users });
   });
   // disconnect
   socket.on("disconnect", () => {
+    const data = users.find((user: any) => user.socketId === socket.id);
+    if (data) {
+      const clients = users.filter((user: any) =>
+        data.followers.find((item: IUser) => item._id === user.id)
+      );
+
+      if (clients.length > 0) {
+        clients.forEach((client: any) => {
+          socket.to(`${client.socketId}`).emit("check-user-offline", data.id);
+        });
+      }
+    }
+
     users = users.filter((user: any) => user.socketId !== socket.id);
   });
 
@@ -108,7 +120,7 @@ const SocketServer = (socket: socketIo.Socket) => {
       socket.to(user.socketId).emit("get-message", {
         sender,
         text,
-        media
+        media,
       });
     }
   });
@@ -116,6 +128,24 @@ const SocketServer = (socket: socketIo.Socket) => {
   socket.on("delete-message", (message) => {
     const user = users.find((user: any) => user.id === message.recipient);
     user && socket.to(`${user.socketId}`).emit("delete-message-to-client", message);
+  });
+
+  // Check User Online / Offline
+  socket.on("check-user-online", (data) => {
+    const following = users.filter((user: any) =>
+      data.followings.find((item: IUser) => item._id === user.id)
+    );
+    socket.emit("check-user-online-to-me", following);
+
+    const clients = users.filter((user: any) =>
+      data.followers.find((item: IUser) => item._id === user.id)
+    );
+
+    if (clients.length > 0) {
+      clients.forEach((client: any) => {
+        socket.to(`${client.socketId}`).emit("check-user-online-to-client", data._id);
+      });
+    }
   });
 };
 

@@ -46,7 +46,6 @@ class App {
 
     this.io.on("connection", (socket: socketIo.Socket) => {
       Logger.warn("a user connected : " + socket.id);
-      socket.emit("message", "Hello " + socket.id);
       socketServer(socket)
     });
   }

@@ -13,7 +13,8 @@ class ConversationService {
     const features = new APIfeatures(
       this.conversationSchema
         .find({ recipients: userId })
-        .populate("recipients", "avatar account fullname"),
+        .populate("recipients", "avatar account fullname")
+        .sort("-updatedAt"),
       query
     );
 
