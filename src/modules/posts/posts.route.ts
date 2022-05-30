@@ -1,5 +1,5 @@
 import { Route } from "@core/interfaces";
-import { authMiddleware, validationMiddleware } from "@core/middlewares";
+import { authAdmin, authMiddleware, validationMiddleware } from "@core/middlewares";
 import { Router } from "express";
 import CreatePostDto from "./dtos/create-posts.dto";
 import PostController from "./posts.controler";
@@ -27,6 +27,8 @@ class PostRoute implements Route {
     this.router.put(`${this.path}/:id`, validationMiddleware(CreatePostDto, true), authMiddleware, this.postController.updatePost
     );
     this.router.delete(`${this.path}/:id`, authMiddleware, this.postController.deletePost);
+    this.router.delete(this.path, authMiddleware, authAdmin, this.postController.deleteManyPosts);
+
     this.router.put(`${this.path}/:id/like`, authMiddleware, this.postController.likePost);
     this.router.put(`${this.path}/:id/unlike`, authMiddleware, this.postController.unLikePost);
     this.router.put(`${this.path}/save-post/:id`, authMiddleware, this.postController.savePost);

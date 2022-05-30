@@ -159,6 +159,12 @@ class PostService {
       .exec();
     return post;
   }
+  public async deleteManyPosts(postIds: string[]): Promise<number | undefined> {
+    const result = await this.postSchema.deleteMany({ _id: [...postIds] }).exec();
+    if (!result) throw new HttpException(40, "PostId is invalid");
+    return result.deletedCount;
+  }
+
 
   public async likePost(userId: string, postId: string): Promise<IPost> {
     const post = await this.postSchema

@@ -75,6 +75,17 @@ class PostController {
     }
   };
 
+  
+  public deleteManyPosts = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const ids: string[] = req.body;
+      const result = await this.postService.deleteManyPosts(ids);
+      res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public likePost = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = req.user.id;
