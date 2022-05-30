@@ -1,5 +1,8 @@
-# Social network 
+# IT Network 
 
+## Diagrams
+link thiết kế 1: https://drive.google.com/file/d/11MTWURyVgxHUptUbHzfBaTpbU2eTIHb0/view?usp=sharing
+link 2: https://drive.google.com/file/d/1BIefn0fP5LIr67aJB1_tNK_qRGwywZoL/view?usp=sharing
 ## Technologies stack
 
 - NodeJS
