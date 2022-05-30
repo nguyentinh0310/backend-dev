@@ -14,6 +14,7 @@ class CommentRoute implements Route {
   }
 
   private initializeRoutes(){
+    this.router.get(`${this.path}`, this.commentController.getAllComment);
     this.router.post(`${this.path}`, validationMiddleware(CommentDto,true), authMiddleware, this.commentController.createComment)
     this.router.put(`${this.path}/:id`, validationMiddleware(CommentDto,true), authMiddleware, this.commentController.updateComment)
     this.router.delete(`${this.path}/:id`, authMiddleware, this.commentController.deleteComment)

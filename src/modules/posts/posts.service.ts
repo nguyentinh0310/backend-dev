@@ -148,7 +148,15 @@ class PostService {
 
     await post.remove();
     await this.commentSchema.deleteMany({ _id: { $in: post.comments } });
-
+    await this.userSchema
+      .findOneAndUpdate(
+        { _id: userId },
+        {
+          $pull: { saved: postId },
+        },
+        { new: true }
+      )
+      .exec();
     return post;
   }
 

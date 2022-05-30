@@ -1,4 +1,6 @@
 import { HttpException } from "@core/exceptions";
+import { ListResponse } from "@core/interfaces";
+import { APIfeatures } from "@core/utils";
 import { PostSchema } from "@modules/posts";
 import { IComment } from "./comment.interface";
 import CommentSchema from "./comment.model";
@@ -8,6 +10,24 @@ class CommentService {
   private commentSchema = CommentSchema;
   private postSchema = PostSchema;
 
+  
+  public async getAllComment(query: any): Promise<ListResponse<IComment>> {
+    const features = new APIfeatures(
+      this.commentSchema
+        .find(),
+      query
+    )
+      .paginating()
+      .sorting();
+    const comments = await features.query;
+    const rowCount = await this.commentSchema.countDocuments().exec();
+
+    return {
+      data: comments,
+      totalRows: rowCount,
+    };
+  }
+  
   public async createComment(userId: string, commentDto: CommentDto): Promise<IComment> {
     const { content, postId, postUserId, reply, tag } = commentDto;
 

@@ -5,6 +5,15 @@ import CommentDto from "./dtos/comment.dto";
 class CommentController {
   public commentService = new CommentService();
 
+  public getAllComment = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const comments = await this.commentService.getAllComment(req.query);
+      res.status(200).json(comments);
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public createComment = async (
     req: Request,
     res: Response,
