@@ -9,6 +9,23 @@ class ConversationService {
   private conversationSchema = ConversationSchema;
   private messageSchema = MessageSchema;
 
+  public async getAllConversation( query: any): Promise<ListResponse<IConversation>> {
+    const features = new APIfeatures(
+      this.conversationSchema
+        .find(),
+      query
+    );
+
+    const conversations = await features.query;
+    const rowCount = await this.conversationSchema.countDocuments().exec();
+
+
+    return {
+      data: conversations,
+      totalRows: rowCount,
+    };
+  }
+
   public async getConversations(userId: string, query: any): Promise<ListResponse<IConversation>> {
     const features = new APIfeatures(
       this.conversationSchema

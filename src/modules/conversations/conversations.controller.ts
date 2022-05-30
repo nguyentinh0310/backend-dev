@@ -4,6 +4,16 @@ import ConversationService from "./conversations.service";
 class ConversationControler {
   private conversationService = new ConversationService();
 
+  public getAllCnv = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const posts = await this.conversationService.getAllConversation(req.query);
+      res.status(200).json(posts);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+
   public getConversations = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const conversations = await this.conversationService.getConversations(req.user.id, req.query);
