@@ -35,19 +35,16 @@ const sendEmail = async (to: string, url: string, txt: string) => {
     const mailOptions = {
       from: SENDER_MAIL,
       to: to,
-      subject: "IT Socail",
+      subject: "IT Networl",
       html: 
-      `<div style="max-width: 700px; margin:auto; border: 10px solid #ddd; padding: 50px 20px; font-size: 110%;">
-        <h2 style="text-align: center; text-transform: uppercase;color: teal;">Welcome to IT Socail.</h2>
-        <p>Congratulations! You're almost set to start using IT Socail.
-          Just click the button below to validate your email address.
+      `<div style="max-width: 700px; margin:auto; border: 5px solid #009efd; padding: 50px 20px; font-size: 110%;">
+        <h2 style="text-align: center; text-transform: uppercase;color: teal;">Chào mừng tới IT Network.</h2>
+        <p>Xin chúc mừng! Bạn sắp bắt đầu sử dụng IT Network.
+          Chỉ cần nhấp vào nút bên dưới để xác thực địa chỉ email của bạn.
         </p>
         
-        <a href=${url} style="background: crimson; text-decoration: none; color: white; padding: 10px 20px; margin: 10px 0; display: inline-block;">${txt}</a>
-    
-        <p>If the button doesn't work for any reason, you can also click on the link below:</p>
-    
-        <div>${url}</div>
+        <a href=${url} style="background: #85eb7d; text-decoration: none; color: white; padding: 10px 20px; margin: 10px 0; display: inline-block;">${txt}</a>
+  
        </div>`,
     };
 

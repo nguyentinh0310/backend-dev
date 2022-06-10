@@ -44,7 +44,7 @@ class AuthService {
     const url = `${this.CLIENT_URL}/active_account/${active_token}`;
 
     if (validateEmail(model.account)) {
-      sendMail(createUser.account, url, "Verify your email address");
+      sendMail(createUser.account, url, "Xác nhận email");
     }
   }
 
@@ -115,7 +115,7 @@ class AuthService {
     const url = `${this.CLIENT_URL}/reset_password/${access_token}`;
 
     if (validateEmail(account)) {
-      sendMail(account, url, "Verify your email address");
+      sendMail(account, url, "Xác nhận");
       throw new HttpException(200, "Success! Please check your email.");
     }
     return user;

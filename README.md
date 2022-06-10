@@ -1,8 +1,12 @@
 # IT Network 
 
 ## Diagrams
-link thiết kế 1: https://drive.google.com/file/d/11MTWURyVgxHUptUbHzfBaTpbU2eTIHb0/view?usp=sharing
-link 2: https://drive.google.com/file/d/1BIefn0fP5LIr67aJB1_tNK_qRGwywZoL/view?usp=sharing
+- link thiết kế 1: https://drive.google.com/file/d/11MTWURyVgxHUptUbHzfBaTpbU2eTIHb0/view?usp=sharing
+- link 2: https://drive.google.com/file/d/1BIefn0fP5LIr67aJB1_tNK_qRGwywZoL/view?usp=sharing
+- use-case Users: https://drive.google.com/file/d/1G-X4mABn2GkczYFmfYCNhe9jSaWf6hiM/view?usp=sharing
+- use-case Admin: https://drive.google.com/file/d/1nBTqXUCHDkDGQyspgvE7OAxzm7FZcYyR/view?usp=sharing
+
+- activity login: https://drive.google.com/file/d/1cY8BoVZhGNLJN46UnozGcC-SZHP9nx3c/view?usp=sharing
 ## Technologies stack
 
 - NodeJS
