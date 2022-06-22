@@ -14,11 +14,7 @@ class PostRoute implements Route {
   }
 
   private initializeRoutes() {
-    this.router.post(
-      `${this.path}`,
-      validationMiddleware(CreatePostDto, true),
-      authMiddleware,
-      this.postController.createPost
+    this.router.post(`${this.path}`, validationMiddleware(CreatePostDto, true), authMiddleware, this.postController.createPost
     );
     this.router.get(`${this.path}`, this.postController.getAllPosts);
     this.router.get(`${this.path}/follow`, authMiddleware , this.postController.getFollowPosts);

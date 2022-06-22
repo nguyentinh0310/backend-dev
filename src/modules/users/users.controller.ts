@@ -4,15 +4,15 @@ import UserService from "./users.service";
 
 export default class UsersController {
   private userService = new UserService();
-  public createUser = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const model: RegisterDto = req.body;
-      const user = await this.userService.createUser(model);
-      res.status(200).json(user);
-    } catch (error) {
-      next(error);
-    }
-  };
+public createUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const model: RegisterDto = req.body;
+    const user = await this.userService.createUser(model);
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
 
   public getAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -52,14 +52,14 @@ export default class UsersController {
     }
   };
 
-  public deleteUser = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      await this.userService.deleteUser(req.params.id);
-      res.status(200).json({ message: "Delete successfully" });
-    } catch (error) {
-      next(error);
-    }
-  };
+public deleteUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await this.userService.deleteUser(req.params.id);
+    res.status(200).json({ message: "Delete successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
 
   public deleteManyUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {

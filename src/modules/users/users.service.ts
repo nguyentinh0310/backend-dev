@@ -342,6 +342,7 @@ class UserService {
       totalRows: rowCount,
     };
   }
+
 }
 
 export default UserService;
