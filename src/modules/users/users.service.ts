@@ -120,6 +120,10 @@ class UserService {
 
   public async deleteManyUsers(userIds: string[]): Promise<number | undefined> {
     const result = await this.userSchema.deleteMany({ _id: [...userIds] }).exec();
+    await this.profileSchema.deleteMany({ user: [...userIds] }).exec();
+    await this.commentSchema.deleteMany({ user: [...userIds] }).exec();
+    await this.postSchema.deleteMany({ user: [...userIds] }).exec();
+
     if (!result) throw new HttpException(409, "Your id is invalid");
     return result.deletedCount;
   }
