@@ -45,6 +45,9 @@ const sendEmail = async (to: string, url: string, txt: string) => {
         
         <a href=${url} style="background: #85eb7d; text-decoration: none; color: white; padding: 10px 20px; margin: 10px 0; display: inline-block;">${txt}</a>
   
+        <p>Nếu nút không hoạt động vì bất kỳ lý do gì, bạn cũng có thể nhấp vào liên kết bên dưới (test-api)):</p>
+        
+        <div>${url}</div>
        </div>`,
     };
 

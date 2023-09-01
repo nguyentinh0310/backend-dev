@@ -12,7 +12,7 @@ export const generateActiveToken = (payload: object) => {
 };
 
 export const generateAccessToken = (payload: object) => {
-  return jwt.sign(payload, `${process.env.ACCESS_TOKEN_SECRET}`, {expiresIn: '2d'})
+  return jwt.sign(payload, `${process.env.ACCESS_TOKEN_SECRET}`, {expiresIn: '1d'})
 }
 export const generateRefreshToken = (payload: object) => {
   return jwt.sign(payload, `${process.env.REFRESH_TOKEN_SECRET}`, {expiresIn: '7d'})
@@ -21,7 +21,7 @@ export const generateRefreshToken = (payload: object) => {
 export const generateJwtToken = (userId: string, refresh_token: string): TokenData => {
   const dataInToken: any = { id: userId };
   const secret: string = process.env.ACCESS_TOKEN_SECRET ?? '';
-  const expiresIn = "2d";
+  const expiresIn = "1d";
   return {
     access_token: jwt.sign(dataInToken, secret, { expiresIn: expiresIn }),
     refresh_token: refresh_token,

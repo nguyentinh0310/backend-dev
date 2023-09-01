@@ -5,8 +5,7 @@ import jwt from "jsonwebtoken";
 
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const cookies = req.cookies;
-  const token =
-    cookies && cookies.jwt ? cookies.jwt : req.header("Authorization");
+  const token = req.header("Authorization");
   // console.log("cookies: ", cookies);
 
   if (!token)
