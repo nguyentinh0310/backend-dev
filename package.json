@@ -5,6 +5,9 @@
   "main": "src/server.ts",
   "author": "Tinh Nguyen",
   "license": "MIT",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "server": "nodemon -L src/server.ts",
     "build": "webpack",
